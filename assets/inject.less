@@ -1,0 +1,92 @@
+// out: inject.css, compress: true, autoprefixer: last 5 versions, groupmedia: true
+
+html {
+    font-size: 1.2rem;
+}
+
+#__next>div:nth-of-type(1)>div>div button {
+    box-shadow: none !important;
+    color: currentColor !important;
+    border: none !important;
+    outline: none !important;
+}
+
+div[data-headlessui-state="open"] nav button {
+    box-shadow: none !important;
+    color: currentColor !important;
+    border: none !important;
+    outline: none !important;
+}
+
+/* Hide new chat, dark node, discord, clear conversation, close button */
+div[data-headlessui-state="open"] nav>a:nth-of-type(1) {
+    display: none;
+}
+
+div[data-headlessui-state="open"] nav>a:nth-of-type(2) {
+    display: none;
+}
+
+div[data-headlessui-state="open"] nav>a:nth-of-type(3) {
+    display: none;
+}
+
+div[data-headlessui-state="open"] nav>a:nth-of-type(4) {
+    display: none;
+}
+
+#headlessui-portal-root button[type=button] {
+    display: none;
+}
+
+main>div:last-of-type>form {
+    margin-bottom: 0.5rem;
+}
+
+/* Hide examples, capabilities, limitations */
+main>div:nth-of-type(1)>div>div>div>div:nth-of-type(1)>div.items-start.text-center {
+    display: none;
+}
+
+/* Align "ChatGPT" vertically */
+main>div:nth-of-type(1)>div>div>div>div:nth-of-type(1).px-6 {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+/* Fix question content */
+main>div:nth-of-type(1)>div>div>div:nth-of-type(2n+1)>div>div:nth-of-type(2)>div:nth-of-type(1) {
+    max-width: 100%;
+    word-wrap: anywhere;
+}
+
+/* /chat page */
+main>div:nth-of-type(1)>div>div>div>div:nth-of-type(2n+1)>div>div:nth-of-type(2)>div:nth-of-type(1) {
+    max-width: 100%;
+    word-wrap: anywhere;
+}
+
+/* Fix answer content */
+/* /chat/... page */
+main>div:nth-of-type(1)>div>div>div:nth-of-type(2n+2)>div>div:nth-of-type(2)>div:nth-of-type(1) {
+    max-width: 100%;
+}
+
+/* /chat page */
+main>div:nth-of-type(1)>div>div>div>div:nth-of-type(2n+2)>div>div:nth-of-type(2)>div:nth-of-type(1) {
+    max-width: 100%;
+}
+
+/* Hide answer like / dislike buttons */
+main>div:nth-of-type(1)>div>div>div:nth-of-type(2n+2)>div>div:nth-of-type(2)>div:nth-of-type(2) {
+    display: none;
+}
+
+main>div:nth-of-type(1)>div>div>div>div:nth-of-type(2n+2)>div>div:nth-of-type(2)>div:nth-of-type(2) {
+    display: none;
+}
+
+/* Hide footer caption */
+main>div:last-of-type>div:last-of-type {
+    display: none;
+}
