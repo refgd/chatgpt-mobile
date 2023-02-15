@@ -1,5 +1,7 @@
 //outfile: inject.js, compress: true, surround: (function (){ ${code} })()
 
+console.log('loaded');
+
 (function (win: any) {
     let __DEV__ = false;
     let __VER__ = '';
@@ -11,6 +13,7 @@
         ScrollStarted,
         ScrollEnded,
         ReloadPage,
+        LoadMainScript,
     }
 
     const refreshIcon = /* html */ `
@@ -101,9 +104,9 @@
         if(body){
             const observer = new MutationObserver((mutations) => {
                 if (rafId) {
-                    window.cancelAnimationFrame(rafId);
+                    win.cancelAnimationFrame(rafId);
                 }
-                rafId = window.requestAnimationFrame(() => {
+                rafId = win.requestAnimationFrame(() => {
                     const currentHref = document.location.href;
                     if (oldHref !== currentHref) {
                         oldHref = currentHref;
@@ -128,7 +131,7 @@
 
     const scrollScript = () => {
         var scrollEndTimeoutId: any;
-        window.addEventListener('scroll', (event: any) => {
+        win.addEventListener('scroll', (event: any) => {
             if (event.target.scrollLeft > 0) {
                 if (scrollEndTimeoutId) {
                     clearTimeout(scrollEndTimeoutId);

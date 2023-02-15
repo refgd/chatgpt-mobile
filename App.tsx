@@ -259,7 +259,6 @@ const App: React.FC = () => {
   document.body.appendChild(script);
   script.onload = () => {
     try {
-      console.log('loaded');
       window.RNJAVA.message({"type":"load","ver":version});
     } catch (error) {
       console.error(error);
@@ -275,7 +274,7 @@ const App: React.FC = () => {
     script.onload = () => {
       try {
         eruda.init();
-
+        
         window.ReactNativeWebView.postMessage(
           JSON.stringify({
             type: ${WebViewMessageType.LoadMainScript},
