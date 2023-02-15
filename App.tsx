@@ -509,6 +509,23 @@ const App: React.FC = () => {
       console.error(error);
     }
   };
+  const getUserAgentForUrl = (url: string | string[]) => {
+    // Logic to determine the user agent based on the URL
+    if (url.includes('google.com')) {
+      return 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.3 Mobile/15E148 Safari/604.1';
+    }
+    // Add more cases for other websites
+    return 'Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.5481.65 Mobile Safari/537.36';
+  }
+
+  const uaState = {
+    userAgent: getUserAgentForUrl(''),
+  }
+
+  const onNavigationStateChange = (navState: { url: any; }) => {
+    const url = navState.url;
+    uaState.userAgent = getUserAgentForUrl(url);
+  }
 
   const handleMessage = (event: WebViewMessageEvent) => {
     const data: MessageData = JSON.parse(event.nativeEvent.data);
@@ -568,9 +585,8 @@ const App: React.FC = () => {
       {...panResponder.panHandlers}
     >
       <StatusBar
-        backgroundColor="transparent"
+        backgroundColor="black"
         barStyle="light-content"
-        translucent={true}
       />
       <WebView
         ref={webviewRef}
@@ -587,6 +603,8 @@ const App: React.FC = () => {
         bounces
         pullToRefreshEnabled
         overScrollMode="never"
+        userAgent={uaState.userAgent}
+        onNavigationStateChange={onNavigationStateChange}
       />
       <TextInput ref={textInputRef} autoFocus style={{ display: "none" }} />
     </View>
