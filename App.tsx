@@ -224,47 +224,38 @@ const App: React.FC = () => {
   }, [systemTheme]);
 
   const loadMainScript = async () => {
-    if (__DEV__) {
-      const ver = Math.random();
-      const jsPath = `${assetsUri}/assets/inject.js?t=${ver}`;
-      const cssPath = `${assetsUri}/assets/inject.css?t=${ver}`;
-      try {
-        const jsResponse = await fetch(jsPath);
-        const jsContent = await jsResponse.text();
+    const ver = (new Date).getTime();
+    const jsPath = `${__DEV__?assetsUri:'https://raw.githubusercontent.com/refgd/chatgpt-mobile/master'}/assets/inject.js?t=${ver}`;
+    const cssPath = `${__DEV__?assetsUri:'https://raw.githubusercontent.com/refgd/chatgpt-mobile/master'}/assets/inject.css?t=${ver}`;
 
-        const cssResponse = await fetch(cssPath);
-        const cssContent = await cssResponse.text();
+    try {
+      const jsResponse = await fetch(jsPath);
+      const jsContent = await jsResponse.text();
 
-        webviewRef.current?.injectJavaScript(/* javascript */ `
-          var style = document.createElement('style');
-          style.innerHTML = \`${cssContent}\`;
-          document.head.appendChild(style);
+      const cssResponse = await fetch(cssPath);
+      const cssContent = await cssResponse.text();
 
-          ${jsContent}
+      webviewRef.current?.injectJavaScript(/* javascript */ `
+        var style = document.createElement('style');
+        style.innerHTML = \`${cssContent}\`;
+        document.head.appendChild(style);
 
-          window.RNJAVA.message({"type":"load","ver":"dev"});
-        `);
+        ${jsContent}
 
-      } catch (error) {
-        console.log(error);
-      }
+        window.RNJAVA.message({"type":"load","ver":"dev"});
+      `);
+
+    } catch (error) {
+      console.log(error);
     }
-    return ''
   }
 
   const mainScript = /* javascript */ `
-  console.log('load main script');
-  var version = (new Date).getTime();
-  var script = document.createElement('script');
-  document.body.appendChild(script);
-  script.onload = () => {
-    try {
-      window.RNJAVA.message({"type":"load","ver":version});
-    } catch (error) {
-      console.error(error);
-    }
-  }
-  script.src = 'https://raw.githubusercontent.com/refgd/chatgpt-mobile/master/assets/inject.js?t='+version;
+    window.ReactNativeWebView.postMessage(
+      JSON.stringify({
+        type: ${WebViewMessageType.LoadMainScript},
+      }),
+    );
 `;
 
   const erudaScript = /* javascript */ `
@@ -274,12 +265,8 @@ const App: React.FC = () => {
     script.onload = () => {
       try {
         eruda.init();
-        
-        window.ReactNativeWebView.postMessage(
-          JSON.stringify({
-            type: ${WebViewMessageType.LoadMainScript},
-          }),
-        );
+
+        ${mainScript}
       } catch (error) {
         console.error(error);
       }
